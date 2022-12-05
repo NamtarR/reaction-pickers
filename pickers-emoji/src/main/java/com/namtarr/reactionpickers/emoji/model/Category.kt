@@ -1,16 +1,17 @@
 package com.namtarr.reactionpickers.emoji.model
 
+import com.namtarr.reactionpickers.emoji.R
 import com.namtarr.reactionpickers.emoji.data.*
 
-enum class Category(val titleEmoji: String, val title: String) {
-    PEOPLE("\uD83D\uDE03", "People and faces"),
-    ANIMALS("\uD83D\uDC3B", "Animals and nature"),
-    FOOD("\uD83C\uDF54", "Food and drink"),
-    ACTIVITY("\uD83C\uDFC0", "Activity"),
-    TRAVEL("\uD83D\uDE98", "Travel and places"),
-    OBJECTS("\uD83D\uDCA1", "Objects"),
-    SYMBOLS("\uD83D\uDC96", "Symbols"),
-    FLAGS("\uD83C\uDFF3", "Flags");
+enum class Category(val drawable: Int) {
+    PEOPLE(R.drawable.ic_emoji_people_faces),
+    ANIMALS(R.drawable.ic_emoji_animals_nature),
+    FOOD(R.drawable.ic_emoji_food_drink),
+    ACTIVITY(R.drawable.ic_emoji_activity),
+    TRAVEL(R.drawable.ic_emoji_travel_places),
+    OBJECTS(R.drawable.ic_emoji_objects),
+    SYMBOLS(R.drawable.ic_emoji_symbols),
+    FLAGS(R.drawable.ic_emoji_flags);
 
     fun getEmoji(): Array<Emoji> {
         return when (this) {

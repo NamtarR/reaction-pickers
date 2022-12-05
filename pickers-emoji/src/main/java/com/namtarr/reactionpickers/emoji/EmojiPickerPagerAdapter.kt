@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.PagerAdapter
 import com.namtarr.reactionpickers.emoji.model.Category
 
 internal class EmojiPickerPagerAdapter(
@@ -15,10 +14,11 @@ internal class EmojiPickerPagerAdapter(
 
     private val adapters = mutableMapOf<Category, EmojiAdapter>()
     private val pool = RecyclerView.RecycledViewPool().apply {
-        setMaxRecycledViews(0, 100)
+        setMaxRecycledViews(0, 128)
     }
 
     init {
+        setHasStableIds(true)
         submitList(dataSource.categories())
     }
 
@@ -46,6 +46,10 @@ internal class EmojiPickerPagerAdapter(
             adapterFactory.invoke(category)
         }
     }
+
+    override fun getItemId(position: Int) = getItem(position).ordinal.toLong() * position
+
+    fun get(position: Int): Category = getItem(position)
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view)
 }

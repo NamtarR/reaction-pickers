@@ -16,7 +16,7 @@ class HeaderLayout @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     private val searchView = SearchView(context)
-    private val tabLayout = TabLayout(context)
+    val tabLayout = TabLayout(context)
 
     init {
         orientation = HORIZONTAL

@@ -34,7 +34,7 @@ internal class EmojiView @JvmOverloads constructor(
     private var emojiSpan: EmojiSpan? = null
     private var emojiCharacter: CharSequence = ""
 
-    fun setTextSize(size: Float) {
+    private fun setTextSize(size: Float) {
         textPaint.textSize = size
         ascent = textPaint.ascent()
         descent = textPaint.descent()
@@ -47,6 +47,7 @@ internal class EmojiView @JvmOverloads constructor(
         xPosition = measuredWidth / 2f
         yPosition = measuredHeight / 2f - (descent + ascent) / 2f
         yPositionInt = yPosition.toInt()
+        setTextSize(measuredWidth / 2f)
     }
 
     override fun draw(canvas: Canvas) {

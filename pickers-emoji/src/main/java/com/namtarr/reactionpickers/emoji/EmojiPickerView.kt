@@ -4,6 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import com.google.android.material.tabs.TabLayoutMediator.TabConfigurationStrategy
 import com.namtarr.reactionpickers.core.extensions.makeLayoutParams
 import com.namtarr.reactionpickers.core.views.HeaderLayout
 import com.namtarr.reactionpickers.core.views.PickerView
@@ -27,6 +30,11 @@ class EmojiPickerView @JvmOverloads constructor(
         addView(viewPager, makeLayoutParams { weight = 1f })
 
         viewPager.adapter = viewPagerAdapter
+
+        TabLayoutMediator(headerLayout.tabLayout, viewPager) { tab, position ->
+            tab.setIcon(viewPagerAdapter.get(position).drawable)
+            tab.view.setPadding(0, 0, 0, 0)
+        }.attach()
     }
 
     private fun createAdapter(category: Category): EmojiAdapter {
