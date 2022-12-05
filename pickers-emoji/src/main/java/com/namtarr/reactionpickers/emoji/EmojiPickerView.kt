@@ -3,6 +3,7 @@ package com.namtarr.reactionpickers.emoji
 import android.content.Context
 import android.util.AttributeSet
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.namtarr.reactionpickers.core.extensions.makeLayoutParams
 import com.namtarr.reactionpickers.core.views.HeaderLayout
 import com.namtarr.reactionpickers.core.views.PickerView
@@ -16,11 +17,12 @@ class EmojiPickerView @JvmOverloads constructor(
 ): PickerView<Category, Emoji>(context, attrs, defStyleAttr) {
 
     private val headerLayout = HeaderLayout(context)
-    private val viewPager = ViewPager(context)
-    private val viewPagerAdapter = EmojiPickerPagerAdapter(::createAdapter)
+    private val viewPager = ViewPager2(context)
     private val emojiDataSource = EmojiDataSource()
+    private val viewPagerAdapter = EmojiPickerPagerAdapter(::createAdapter, emojiDataSource)
 
     init {
+        orientation = VERTICAL
         addView(headerLayout, makeLayoutParams())
         addView(viewPager, makeLayoutParams { weight = 1f })
 

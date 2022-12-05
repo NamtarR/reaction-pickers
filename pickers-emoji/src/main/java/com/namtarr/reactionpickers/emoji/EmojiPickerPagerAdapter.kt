@@ -2,27 +2,43 @@ package com.namtarr.reactionpickers.emoji
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
 import com.namtarr.reactionpickers.emoji.model.Category
 
 internal class EmojiPickerPagerAdapter(
-    private val adapterFactory: (Category) -> EmojiAdapter
-): PagerAdapter() {
+    private val adapterFactory: (Category) -> EmojiAdapter,
+    private val dataSource: EmojiDataSource
+): ListAdapter<Category, EmojiPickerPagerAdapter.ViewHolder>(CategoryDiffUtilCallback) {
 
     private val adapters = mutableMapOf<Category, EmojiAdapter>()
-    private val categories = mutableListOf<Category>()
+    private val pool = RecyclerView.RecycledViewPool().apply {
+        setMaxRecycledViews(0, 100)
+    }
 
-    override fun getCount() = categories.size
+    init {
+        submitList(dataSource.categories())
+    }
 
-    override fun isViewFromObject(view: View, `object`: Any) = view === `object`
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val recyclerView = RecyclerView(parent.context)
+        recyclerView.layoutManager = GridLayoutManager(parent.context, 8).apply {
+            recycleChildrenOnDetach = true
+        }
+        recyclerView.setRecycledViewPool(pool)
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
 
-    override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val category = categories[position]
-        val recyclerView = RecyclerView(container.context)
-        recyclerView.adapter = getOrCreateAdapter(category)
-        container.addView(recyclerView)
-        return recyclerView
+        return ViewHolder(recyclerView)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        (holder.itemView as RecyclerView).adapter = getOrCreateAdapter(getItem(position))
     }
 
     private fun getOrCreateAdapter(category: Category): EmojiAdapter {
@@ -30,4 +46,6 @@ internal class EmojiPickerPagerAdapter(
             adapterFactory.invoke(category)
         }
     }
+
+    class ViewHolder(view: View): RecyclerView.ViewHolder(view)
 }
