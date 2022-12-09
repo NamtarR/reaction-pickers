@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.namtarr.reactionpickers.core.extensions.dp
@@ -105,5 +106,15 @@ class SearchView @JvmOverloads constructor(
 
     fun setOnSearchCollapse(onCollapse: () -> Unit) {
         onCollapseListener = onCollapse
+    }
+
+    fun setOnSearch(onSearch: (String?) -> Unit) {
+        editText.addTextChangedListener {
+            onSearch.invoke(it?.toString())
+        }
+    }
+
+    fun clearQuery() {
+        editText.text = null
     }
 }

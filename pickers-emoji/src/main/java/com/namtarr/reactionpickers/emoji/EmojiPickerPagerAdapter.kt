@@ -5,21 +5,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.*
 import com.namtarr.reactionpickers.emoji.model.Category
 
 internal class EmojiPickerPagerAdapter(
-    private val adapterFactory: (Category) -> EmojiAdapter,
-    private val dataSource: EmojiDataSource
+    private val adapterFactory: (Category) -> EmojiAdapter
 ): ListAdapter<Category, EmojiPickerPagerAdapter.ViewHolder>(CategoryDiffUtilCallback) {
 
-    private val adapters = mutableMapOf<Category, EmojiAdapter>()
-    private val pool = RecyclerView.RecycledViewPool().apply {
+    private val pool = RecycledViewPool().apply {
         setMaxRecycledViews(0, 128)
     }
 
     init {
         setHasStableIds(true)
-        submitList(dataSource.categories())
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -38,13 +36,7 @@ internal class EmojiPickerPagerAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        (holder.itemView as RecyclerView).adapter = getOrCreateAdapter(getItem(position))
-    }
-
-    private fun getOrCreateAdapter(category: Category): EmojiAdapter {
-        return adapters.getOrPut(category) {
-            adapterFactory.invoke(category)
-        }
+        (holder.itemView as RecyclerView).adapter = adapterFactory.invoke(getItem(position))
     }
 
     override fun getItemId(position: Int) = getItem(position).ordinal.toLong() * position

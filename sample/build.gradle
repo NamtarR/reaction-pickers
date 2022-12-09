@@ -4,6 +4,21 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('C:\\Users\\Anton\\Documents\\Projects\\Android\\mobile-enterprise\\staply.jks')
+            storePassword 'vault13online'
+            keyAlias 'staply'
+            keyPassword 'vault13online'
+        }
+        debug {
+
+        storeFile file('C:\\Users\\Anton\\Documents\\Projects\\Android\\mobile-enterprise\\staply.jks')
+            storePassword 'vault13online'
+            keyAlias 'staply'
+            keyPassword 'vault13online'
+        }
+    }
     namespace 'com.namtarr.reactionpickers.sample'
     compileSdk 33
 
@@ -15,6 +30,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        signingConfig signingConfigs.release
     }
 
     buildTypes {
